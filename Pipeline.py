@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from PerspectiveTransformation import PerspectiveTransformation
 from Thresholding import *
+import matplotlib.pyplot as plt
 
 def radius_and_offset(left_fit, right_fit, warped_combination, binary_warped, image):
         # Define conversions in x and y from pixels space to meters
@@ -49,11 +50,13 @@ class Pipeline:
         pass
         
     # Image undist
-    def process_image(self,img,binary_warped):
+    def process_image(self,img):
         
         perspective = PerspectiveTransformation()
         threshold = Thresholding()
+        
         combined_gradient_binary = threshold.forward(img)
+        binary_warped= perspective.forward(combined_gradient_binary)
         Minv = perspective.M_inv
         
         # Assuming you have created a warped binary image called "binary_warped"
